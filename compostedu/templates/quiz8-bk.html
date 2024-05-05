@@ -1,0 +1,77 @@
+<!-- templates/quiz8.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 8</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Drag and Drop</h1>
+        <p>Place the items into appropriate categories - compost or do not compost</p>
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>Items</h3>
+                <div id="items" class="list-group">
+                    <div class="list-group-item draggable" draggable="true">Banana peel</div>
+                    <div class="list-group-item draggable" draggable="true">Plastic bottle</div>
+                    <div class="list-group-item draggable" draggable="true">Dairy product</div>
+                    <div class="list-group-item draggable" draggable="true">Glass jar</div>
+                    <div class="list-group-item draggable" draggable="true">Grass clippings</div>
+                    <div class="list-group-item draggable" draggable="true">Tea bag (without staples)</div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <h3>Categories</h3>
+                <div id="categories">
+                    <div class="card">
+                        <div class="card-header">Compost</div>
+                        <div class="card-body droppable" id="compost" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">Do Not Compost</div>
+                        <div class="card-body droppable" id="do-not-compost" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" onclick="submitQuiz()" class="btn btn-primary mt-3">Submit Quiz</button>
+    </div>
+
+    <script>
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("text");
+            event.target.appendChild(document.getElementById(data));
+        }
+
+        function submitQuiz() {
+            var compostItems = document.getElementById("compost").children;
+            var doNotCompostItems = document.getElementById("do-not-compost").children;
+            var compostItemsList = [];
+            var doNotCompostItemsList = [];
+            for (var i = 0; i < compostItems.length; i++) {
+                compostItemsList.push(compostItems[i].textContent);
+            }
+            for (var j = 0; j < doNotCompostItems.length; j++) {
+                doNotCompostItemsList.push(doNotCompostItems[j].textContent);
+            }
+            // Submit data to the server
+            // Example: You can use AJAX to send the data to your Flask server
+            console.log("Compost Items: ", compostItemsList);
+            console.log("Do Not Compost Items: ", doNotCompostItemsList);
+            // Redirect to the next quiz page or result page
+        }
+    </script>
+</body>
+</html>
