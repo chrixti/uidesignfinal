@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+      background-color: #DC143C;
+    }
+    
+ 	.navbar-nav > li > a {
+    	color: #A9A9A9 !important;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    .image {
+    	
+      width: 80%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #DC143C;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+    
+    .wrapper-container-text {
+    	display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+    
+    .flex-container-image {
+    	display: flex;
+        flex-direction: column;
+        justify-content: center;
+ 		align-items: center;
+    	
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a class="gray-links" href="#">Welcome</a></li>
+        <li class="active"><a class="gray-links" href="#">Basics</a></li>
+        <li><a class="gray-links" href="#">Home</a></li>
+        <li><a class="gray-links" href="#">Backyard</a></li>
+        <li><a class="gray-links" href="#">Quiz</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<div class="container-fluid text-center">    
+  <div class="row content">
+  	<div class="wrapper-container-text col-sm-8">
+    	<div class="flex-container-text col-sm-8 text-center"> 
+      	<h1>What is Composting</h1>
+      	<p>Composting is a managed, oxygen-requiring procedure that transforms organic substances into a nutrient-dense, biologically consistent soil enhancer via natural breakdown. The final outcome is compost. During the composting phase, microorganisms consume the substances introduced to the compost heap. They use carbon and nitrogen for growth and reproduction, water for digesting substances, and oxygen for respiration.</p>
+      	<p>You can perform composting at your residence using leftover food scraps from your kitchen and dry foliage and wooden debris from your garden.</p>
+      	<hr>
+      	<button onclick="window.location.href = 'file:///Users/ketkimorabkar/Desktop/Columbia/UI%20UX%20Design/Final%20Project/basics2.html';">Next</button>
+    	</div>
+    </div>
+    <div class="flex-container-image col-sm-4 sidenav">
+      <img class="image" src="https://i0.wp.com/post.healthline.com/wp-content/uploads/2021/06/compost-food-waste-1296x728-header.jpg?w=1155&h=1528" />
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+</footer>
+
+</body>
+</html>
