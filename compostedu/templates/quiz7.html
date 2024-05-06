@@ -1,39 +1,39 @@
-<!-- templates/quiz7.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz 7</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="center-screen">
     <div class="container mt-5">
         <h1>True or False:</h1>
         <form action="/quiz7" method="post">
-            <div class="form-group">
-                <label for="question71">It is okay to compost meat, fish, and poultry scraps because they are organic.</label><br>
-                <input type="radio" id="question71True" name="question71" value="True">
-                <label for="question71True"> True</label><br>
-                <input type="radio" id="question71False" name="question71" value="False">
-                <label for="question71False"> False</label>
+            <div class="col-lg-12">
+                <div class="form-group mt-5">
+                    <h4>It is okay to compost meat, fish, and poultry scraps because they are organic.</h4>
+                    <input class="form-check-input" type="radio" id="question71True" name="question71" value="True">
+                    <label class="form-check-label" for="question71True"> True</label><br>
+                    <input class="form-check-input" type="radio" id="question71False" name="question71" value="False">
+                    <label class="form-check-label" for="question71False"> False</label>
+                </div>
+                <div class="form-group mt-5">
+                    <h4>Composting requires the presence of microorganisms, which use carbon, nitrogen, water, and oxygen to break down organic material.</h4>
+                    <input class="form-check-input" type="radio" id="question72True" name="question72" value="True">
+                    <label class="form-check-label" for="question72True"> True</label><br>
+                    <input class="form-check-input" type="radio" id="question72False" name="question72" value="False">
+                    <label class="form-check-label" for="question72False"> False</label>
+                </div>
+                <div class="form-group mt-5">
+                    <h4>Composting can help reduce the emission of greenhouse gases by diverting organic waste from landfills.</h4>
+                    <input class="form-check-input" type="radio" id="question73True" name="question73" value="True">
+                    <label class="form-check-label" for="question73True"> True</label><br>
+                    <input class="form-check-input" type="radio" id="question73False" name="question73" value="False">
+                    <label class="form-check-label" for="question73False"> False</label>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="question72">Composting requires the presence of microorganisms, which use carbon, nitrogen, water, and oxygen to break down organic material.</label><br>
-                <input type="radio" id="question72True" name="question72" value="True">
-                <label for="question72True"> True</label><br>
-                <input type="radio" id="question72False" name="question72" value="False">
-                <label for="question72False"> False</label>
+            <div class="mt-5">
+                <button type="submit" class="btn btn-primary">Next</button>
             </div>
-            <div class="form-group">
-                <label for="question73">Composting can help reduce the emission of greenhouse gases by diverting organic waste from landfills.</label><br>
-                <input type="radio" id="question73True" name="question73" value="True">
-                <label for="question73True"> True</label><br>
-                <input type="radio" id="question73False" name="question73" value="False">
-                <label for="question73False"> False</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Next Quiz</button>
         </form>
     </div>
-</body>
-</html>
+</div>
+
+{% endblock %}
+

@@ -1,20 +1,18 @@
-{% extends "index.html" %}
+{% extends 'index.html' %}
 
 {% block content %}
-<div class="wrapper-container">
-    <div class="inner-container container-fluid text-center">    
-      <div class="container-3 row content">
-        <div class="container-4 col-sm-8 text-center"> 
-          <h2>How to Compost</h2>
-          <p>A comprehensive platform for teaching you the ins and outs of composting</p>
-          <hr>
-          <h2>Our Promise</h2>
-          <p>We guarantee a better understanding of the composting process after spending only 10 minutes on our website.</p>
-          <hr>
-          <h2>Navigating the website</h2>
-          <p>Go through each tab starting with the “Basics” to get an overview of composting until you reach the “Quiz” tab which will test your knowledge after going through all the provided materials.</p>
-        </div>
-      </div>
+
+<div class="row align-items-center justify-content-center gap-5">
+    <div class="col-md-4">
+        <h1>Welcome to</h1>
+        <h1 class="composting-text">Composting 101</h1>
+        <p>"Composting 101" is an informative platform guiding users through the art of composting, offering insights into the process, its benefits, and practical tips for creating nutrient-rich soil amendments from organic waste materials.</p>
+      <a href="/overview" class="btn btn-primary">Get Started</a>
     </div>
+
+    <div class="col-md-6">
+      <img src="static/home.png" class="img-fluid" alt="Composting Image">
     </div>
-    {% endblock %}
+  </div>
+{% endblock %}
+

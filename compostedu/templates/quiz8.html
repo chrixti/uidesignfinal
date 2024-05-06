@@ -1,41 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz 8</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+    .center-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        
         .draggable {
             cursor: pointer;
         }
+        
         .droppable {
             min-height: 50px;
             border: 2px dashed #ccc;
             margin-bottom: 10px;
         }
     </style>
-</head>
-<body>
+</style>
+<script>
+    $(document).ready(function () {
+        $('.draggable').on('dragstart', function (event) {
+            event.originalEvent.dataTransfer.setData('text/plain', $(this).attr('data-type'));
+        });
+
+        $('.droppable').on('dragover', function (event) {
+            event.preventDefault();
+        });
+
+        $('.droppable').on('drop', function (event){
+            $(this).append($('<div class="list-group-item">' + event.originalEvent.dataTransfer.getData('text/plain') + '</div>'));
+        });
+        function updateHiddenInputs() {
+            var compostItemsList = [];
+            var doNotCompostItemsList = [];
+
+            $('#compost').children().each(function () {
+                compostItemsList.push($(this).text());
+            });
+
+            $('#do-not-compost').children().each(function () {
+                doNotCompostItemsList.push($(this).text());
+            });
+
+            $('#hcompost').val(JSON.stringify(compostItemsList));
+            $('#hdonotcompost').val(JSON.stringify(doNotCompostItemsList));
+        }
+        $('#submitQuiz').on('click', function (event) {
+            updateHiddenInputs()
+        });
+    });
+</script>
+<div class="center-screen">
     <div class="container mt-5">
         <h1>Drag and Drop</h1>
-        <p>Place the items into appropriate categories - compost or do not compost</p>
+        <p>Place the items into appropriate box - compost or do not compost</p>
         <form action="/quiz8" method="post">
             <div class="row">
                 <div class="col-sm-6">
                     <h3>Items</h3>
                     <div id="items" class="list-group">
-                        <div class="list-group-item draggable" draggable="true" data-category="compost">Banana peel</div>
-                        <div class="list-group-item draggable" draggable="true" data-category="do-not-compost">Plastic bottle</div>
-                        <div class="list-group-item draggable" draggable="true" data-category="do-not-compost">Dairy product</div>
-                        <div class="list-group-item draggable" draggable="true" data-category="do-not-compost">Glass jar</div>
-                        <div class="list-group-item draggable" draggable="true" data-category="compost">Grass clippings</div>
-                        <div class="list-group-item draggable" draggable="true" data-category="compost">Tea bag (without staples)</div>
+                        <div class="list-group-item draggable" draggable="true" data-type="Banana peel">Banana peel</div>
+                        <div class="list-group-item draggable" draggable="true" data-type="Plastic bottle">Plastic bottle</div>
+                        <div class="list-group-item draggable" draggable="true" data-type="Dairy product">Dairy product</div>
+                        <div class="list-group-item draggable" draggable="true" data-type="Glass jar">Glass jar</div>
+                        <div class="list-group-item draggable" draggable="true" data-type="Grass clippings">Grass clippings</div>
+                        <div class="list-group-item draggable" draggable="true" data-type="Tea bag (without staples)">Tea bag (without staples)</div>
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <h3>Categories</h3>
-                    <div id="categories">
+                    <h3>Box</h3>
+                    <div id="box">
                         <div class="card">
                             <div class="card-header">Compost</div>
                             <div class="card-body droppable" id="compost" data-category="compost"></div>
@@ -47,34 +85,13 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" id="submitQuiz" class="btn btn-primary mt-3">Submit Quiz</button>
+            <div class="mt-5">
+                <button type="submit" id="submitQuiz" class="btn btn-primary mt-3">Submit Quiz</button>
+            </div>
+            <input type="hidden" id="hcompost" name="hcompost">
+            <input type="hidden" id="hdonotcompost" name="hdonotcompost">
         </form>
     </div>
+</div>
+{% endblock %}
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Make items draggable
-            $(".draggable").on("dragstart", function(event) {
-                event.originalEvent.dataTransfer.setData("text/plain", $(this).attr("id"));
-            });
-
-            // Make categories droppable
-            $(".droppable").on("dragover", function(event) {
-                event.preventDefault();
-            });
-
-            $(".droppable").on("drop", function(event) {
-                event.preventDefault();
-                var data = event.originalEvent.dataTransfer.getData("text");
-                var category = $("#" + data).data("category");
-                var targetCategory = $(this).data("category");
-
-                if (category === targetCategory) {
-                    $(this).append($("#" + data));
-                }
-            });
-        });
-    </script>
-</body>
-</html>

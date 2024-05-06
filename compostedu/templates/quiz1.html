@@ -1,34 +1,33 @@
-<!-- templates/quiz1.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz 1</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="center-screen">
     <div class="container mt-5">
         <h1>1. What is composting?</h1>
         <form action="/quiz1" method="post">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="question1" id="optionA" value="A">
-                <label class="form-check-label" for="optionA">A. The process of burning organic waste to reduce its volume</label>
+            <div class="col-lg-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question1" id="optionA" value="A">
+                    <label class="form-check-label" for="optionA">A. The process of burning organic waste to reduce its volume</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question1" id="optionB" value="B">
+                    <label class="form-check-label" for="optionB">B. The process of recycling plastic and glass materials into new products</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question1" id="optionC" value="C">
+                    <label class="form-check-label" for="optionC">C. The process of turning organic waste into a nutrient-rich soil amendment via natural decomposition</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question1" id="optionD" value="D">
+                    <label class="form-check-label" for="optionD">D. The process of collecting rainwater for gardening purposes</label>
+                </div>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="question1" id="optionB" value="B">
-                <label class="form-check-label" for="optionB">B. The process of recycling plastic and glass materials into new products</label>
+            <div class="mt-5">
+                <button type="submit" class="btn btn-primary">Next</button>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="question1" id="optionC" value="C">
-                <label class="form-check-label" for="optionC">C. The process of transforming organic waste into a nutrient-rich soil amendment through natural decomposition</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="question1" id="optionD" value="D">
-                <label class="form-check-label" for="optionD">D. The process of collecting rainwater for gardening purposes</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Next Quiz</button>
         </form>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
+

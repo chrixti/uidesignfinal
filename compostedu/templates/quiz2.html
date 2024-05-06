@@ -1,38 +1,39 @@
-<!-- templates/quiz2.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz 2</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="center-screen">
     <div class="container mt-5">
         <h1>2. Which of the following items can be composted? (Select all that apply)</h1>
         <form action="/quiz2" method="post">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="question2[]" id="optionA" value="A">
-                <label class="form-check-label" for="optionA">A. Fruit and vegetable scraps</label>
+            <div class="col-lg-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="question2" id="optionA" value="A">
+                    <label class="form-check-label" for="optionA">A. Fruit and vegetable scraps</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="question2" id="optionB" value="B">
+                    <label class="form-check-label" for="optionB">B. Dairy products</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="question2" id="optionC" value="C">
+                    <label class="form-check-label" for="optionC">C. Pet waste</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="question2" id="optionD" value="D">
+                    <label class="form-check-label" for="optionD">D. Coffee grounds and paper filters</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="question2" id="optionE" value="E">
+                    <label class="form-check-label" for="optionE">E. Plastic bags</label>
+                </div>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="question2[]" id="optionB" value="B">
-                <label class="form-check-label" for="optionB">B. Dairy products</label>
+            <div class="mt-5">
+                <button type="submit" class="btn btn-primary">Next</button>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="question2[]" id="optionC" value="C">
-                <label class="form-check-label" for="optionC">C. Pet waste</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="question2[]" id="optionD" value="D">
-                <label class="form-check-label" for="optionD">D. Coffee grounds and paper filters</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="question2[]" id="optionE" value="E">
-                <label class="form-check-label" for="optionE">E. Plastic bags</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Next Quiz</button>
         </form>
     </div>
-</body>
-</html>
+</div>
+
+</div>
+{% endblock %}
+

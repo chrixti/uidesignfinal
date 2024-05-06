@@ -1,34 +1,33 @@
-<!-- templates/quiz3.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz 3</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="center-screen">
     <div class="container mt-5">
         <h1>3. What are "browns" and "greens" in the context of composting?</h1>
         <form action="/quiz3" method="post">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="question3" id="optionA" value="A">
-                <label class="form-check-label" for="optionA">A. Browns are dried leaves and twigs, while greens are kitchen scraps like fruit and vegetable peels.</label>
+            <div class="col-lg-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question3" id="optionA" value="A">
+                    <label class="form-check-label" for="optionA">A. Browns are dried leaves and twigs, while greens are kitchen scraps like fruit and vegetable peels.</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question3" id="optionB" value="B">
+                    <label class="form-check-label" for="optionB">B. Browns are newspapers only, while greens are water and air.</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question3" id="optionC" value="C">
+                    <label class="form-check-label" for="optionC">C. Browns are chemical fertilizers, while greens are organic fertilizers.</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question3" id="optionD" value="D">
+                    <label class="form-check-label" for="optionD">D. Browns are colored paper, while greens are plain paper.</label>
+                </div>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="question3" id="optionB" value="B">
-                <label class="form-check-label" for="optionB">B. Browns are newspapers only, while greens are water and air.</label>
+            <div class="mt-5">
+                <button type="submit" class="btn btn-primary">Next</button>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="question3" id="optionC" value="C">
-                <label class="form-check-label" for="optionC">C. Browns are chemical fertilizers, while greens are organic fertilizers.</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="question3" id="optionD" value="D">
-                <label class="form-check-label" for="optionD">D. Browns are colored paper, while greens are plain paper.</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Next Quiz</button>
         </form>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
+
