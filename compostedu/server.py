@@ -33,10 +33,32 @@ def what_to_compost2():
 def how_to_compost():
     return render_template('how.html')
 
-# Route for quiz start page
+
+
+# Define the QuizResult model
+class QuizResult(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    email = db.Column(db.String(100))
+    score = db.Column(db.Integer)
+    date_time = db.Column(db.DateTime, default=datetime.utcnow)
+
+# Create the database tables
+with app.app_context():
+    # Create the database tables
+    db.create_all()
+
+
+@app.route('/admlist')
+def quiz_results():
+    # Retrieve quiz results from the database
+    quiz_results = QuizResult.query.all()
+    return render_template('admlist.html', quiz_results=quiz_results)
+
+
 @app.route('/quiz')
 def quiz_start():
-    return render_template('quiz.html')
+    return render_template('quiz_start.html')
 
 
 @app.route('/quiz', methods=['POST'])
@@ -44,20 +66,20 @@ def quiz():
     stname = request.form['name']
     stemail = request.form['email']
     if stname =="" or stemail =="":
-        return redirect(url_for('quiz'))
+        return redirect(url_for('quiz_start'))
     if stname != "" and stemail !="": 
         session["stname"] = stname
         session["stemail"] = stemail
         session["score"] = 0
         return redirect(url_for('quiz1')) 
     # Save name and email to session or pass them as hidden fields in subsequent requests
-    return render_template('quiz.html')
+    return render_template('quiz_start.html')
 
 # Routes for quiz questions
 @app.route('/quiz1', methods=['GET', 'POST'])
 def quiz1():
     if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
-        return redirect(url_for('quiz'))
+        return redirect(url_for('quiz_start'))
     session["score"] = 0;
     if request.method == 'POST':
         response1 = request.form['question1']
@@ -104,9 +126,24 @@ def quiz4():
         # Check if the response is correct
         if response4 == 'C':
             session["score"] += 1
-        return redirect(url_for('quiz6'))
+        return redirect(url_for('quiz5'))
     return render_template('quiz4.html')
 
+@app.route('/quiz5', methods=['GET', 'POST'])
+def quiz5():
+    if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
+        return redirect(url_for('quiz_start'))
+    if request.method == 'POST':
+        tempscore = 0
+        responses5 = request.form.getlist('question5')
+        correct_answers5 = ['A', 'C', 'D']
+        for response in responses5:
+            if response in correct_answers5:
+                tempscore += 1
+        if tempscore == 3:
+            session["score"] += 1
+        return redirect(url_for('quiz6'))
+    return render_template('quiz5.html')
 
 @app.route('/quiz6', methods=['GET', 'POST'])
 def quiz6():
@@ -187,7 +224,6 @@ def show_result():
     session.pop('score', None)
     latest_result = QuizResult.query.order_by(QuizResult.id.desc()).first()
     return render_template('quiz_result.html', score=latest_result.score, description=description)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

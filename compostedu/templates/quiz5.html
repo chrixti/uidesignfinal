@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="center-screen">
+    <div class="container mt-5">
+        <h1>5. How can compost be used? (Select all that apply)</h1>
+        <form action="/quiz5" method="post">
+            <div class="col-lg-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="question5" id="optionA" value="A">
+                    <label class="form-check-label" for="optionA">A. As a soil conditioner</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="question5" id="optionB" value="B">
+                    <label class="form-check-label" for="optionB">B. To create air fresheners for the home</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="question5" id="optionC" value="C">
+                    <label class="form-check-label" for="optionC">C. As mulch in gardening</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="question5" id="optionD" value="D">
+                    <label class="form-check-label" for="optionD">D. To improve soil structure and fertility</label>
+                </div>
+            </div>
+            <div class="mt-5">
+                <button type="submit" class="btn btn-primary">Next</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
