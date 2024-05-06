@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+    .button-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+</style>
+<p class="subtitle">why compost</p>
+<h1>Why Compost at Home?</h1>
+<div class="row align-items-center justify-content-center gap-5">
+    <div class="col-md-4">
+        <h5>It's Easy!</h5>
+        <ul class="list">
+            <li>It's a straightforward process that doesn't require much effort, specialized tools, or extensive knowledge.</li>
+        </ul>
+        <h5>Improve Your Soil!</h5>
+        <ul class="list">
+            <li>Enriches soil and reduces the need for chemical fertilizers.</li>
+            <li>Improves soil health, suppresses diseases and pests, and boosts plant growth.</li>
+        </ul>
+        <h5>Help the Environment!</h5>
+        <ul class="list">
+            <li>Reduces waste sent to landfills or incinerators</li>
+            <li>Minimizes the emission of greenhouse gases into the atmosphere.</li>
+        </ul>
+
+    </div>
+    <div class="col-md-6">
+        <h4>Watch the Video to Learn More!</h4>
+        <iframe width="100%" height="350px" src="https://www.youtube.com/embed/oFlsjRXbnSk" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+<div class="button-container d-flex justify-content-between">
+<div class="nextbtn text-left">
+    <a href="/overview" class="btn btn-primary">Go Back to Overview</a>
+</div>
+<div class="nextbtn text-right">
+    <a href="/what-to-compost" class="btn btn-primary">Learn What You Can Compost</a>
+</div>
+</div>
+{% endblock %}
+
+
+
+
+

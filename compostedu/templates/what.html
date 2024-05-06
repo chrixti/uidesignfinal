@@ -1,0 +1,180 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+
+<style>
+.flashcards-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.flashcard {
+    width: 500px;
+    height: 400px;
+    margin: 10px;
+    perspective: 1000px;
+    cursor: pointer;
+    padding-top: 5px;
+    
+}
+
+.flashcard-red {
+    width: 500px;
+    height: 400px;
+    margin: 10px;
+    perspective: 1000px;
+    cursor: pointer;
+    padding-top: 5px;
+    
+}
+
+
+.flashcard .front, .flashcard .back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    transition: transform 0.6s linear;
+    left: 10px; 
+    right: 10px; 
+    top: 10px; 
+    bottom: 10px; 
+}
+
+.flashcard-red .front, .flashcard-red .back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    transition: transform 0.6s linear;
+    left: 10px; 
+    right: 10px; 
+    top: 10px; 
+    bottom: 10px; 
+}
+
+
+.flashcard .front {
+    background-color: rgb(36, 36, 36);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flashcard-red .front {
+    background-color: red;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flashcard-red .back {
+    background-color: #f0f0f0;
+    color: black;
+    transform: rotateX(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} 
+
+.flashcard .back {
+    background-color: #f0f0f0;
+    color: black;
+    transform: rotateX(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.flashcard.flipped .front {
+    transform: rotateX(180deg);
+}
+
+.flashcard.flipped .back {
+    transform: rotateX(0deg);
+}
+
+
+.flashcard-red.flipped .front {
+    transform: rotateX(180deg);
+}
+
+.flashcard-red.flipped .back {
+    transform: rotateX(0deg);
+}
+
+
+</style>
+<script>
+    function toggleFlashcard(card) {
+    card.classList.toggle('flipped');
+}
+
+</script>
+
+<p class="subtitle2">what to compost</p>
+<h1>What Can You Compost?</h1>
+    <p>Click a card to find out!</p>
+    <div class="flashcards-container">
+
+        <div class="flashcard" onclick="toggleFlashcard(this)">
+            <div class="front">Carbon-rich Materials (Browns)
+            </div>
+            <div class="back">
+                <row>
+                <col>
+                <img src="static/brown.png" class="img-fluid" alt="Types of Brown Composting Items Image">
+                </col>
+                <col>
+                    <ul>
+                        <li>Dry leaves</li>
+                        <li>Plant stalks and twigs</li>
+                        <li>Shredded paper (non-glossy, uncolored) and brown bags</li>
+                        <li>Shredded cardboard (no wax coating, tape, or glue)</li>
+                        <li>Untreated wood chips</li>
+                    </ul>
+                </col>
+
+            </row>
+            </div>
+        </div>
+        <div class="flashcard" onclick="toggleFlashcard(this)">
+            <div class="front">Nitrogen-rich Materials (Greens)
+            </div>
+            <div class="back">
+                <row>
+                <col>
+                <img src="static/green.png" class="img-fluid" alt="Types of Green Composting Items Image">
+                </col>
+                <col>
+                    <ul>
+                        <li>Fruit and vegetable scraps</li>
+                        <li>Grass clippings</li>
+                        <li>Coffee grounds and paper filters</li>
+                        <li>Paper tea bags (no staples)</li>
+                        <li>Eggshells (crushed)</li>
+                    </ul>
+                </col>
+            </row>
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container d-flex justify-content-between">
+        <div class="nextbtn text-left">
+            <a href="/why-compost" class="btn btn-primary">Go Back to Why Compost</a>
+        </div>
+        <div class="nextbtn text-right">
+            <a href="/what-to-compost2" class="btn btn-primary">Learn What NOT to Compost</a>
+        </div>
+    
+{% endblock %}
+
