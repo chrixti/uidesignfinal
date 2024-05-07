@@ -21,40 +21,53 @@
         }
 
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
-    $(document).ready(function () {
-        $('.draggable').on('dragstart', function (event) {
-            event.originalEvent.dataTransfer.setData('text/plain', $(this).attr('data-type'));
+    document.addEventListener('DOMContentLoaded', function() {
+      const items = document.querySelectorAll('.draggable');
+      const compostBin = document.getElementById('compost');
+      const nonCompostBin = document.getElementById('do-not-compost');
+
+      items.forEach(item => {
+        item.addEventListener('dragstart', function(e) {
+          e.dataTransfer.setData('text/plain', e.target.dataset.type);
+        });
+      });
+
+      [compostBin, nonCompostBin].forEach(bin => {
+        bin.addEventListener('dragover', function(e) {
+          e.preventDefault(); 
         });
 
-        $('.droppable').on('dragover', function (event) {
-            event.preventDefault();
+        bin.addEventListener('drop', function(e) {
+          e.preventDefault();
+          const data = e.dataTransfer.getData('text/plain');
+          const draggableElement = document.querySelector(`[data-type="${data}"]`);
+          const dropClone = draggableElement.cloneNode(true);
+          bin.appendChild(dropClone);
+          draggableElement.style.display = 'none'; 
+          updateHiddenInputs(); 
+        });
+      });
+
+      function updateHiddenInputs() {
+        let compostItems = [];
+        let nonCompostItems = [];
+
+        compostBin.querySelectorAll('.draggable').forEach(item => {
+          compostItems.push(item.dataset.type);
         });
 
-        $('.droppable').on('drop', function (event){
-            $(this).append($('<div class="list-group-item">' + event.originalEvent.dataTransfer.getData('text/plain') + '</div>'));
+        nonCompostBin.querySelectorAll('.draggable').forEach(item => {
+          nonCompostItems.push(item.dataset.type);
         });
-        function updateHiddenInputs() {
-            var compostItemsList = [];
-            var doNotCompostItemsList = [];
 
-            $('#compost').children().each(function () {
-                compostItemsList.push($(this).text());
-            });
-
-            $('#do-not-compost').children().each(function () {
-                doNotCompostItemsList.push($(this).text());
-            });
-
-            $('#hcompost').val(JSON.stringify(compostItemsList));
-            $('#hdonotcompost').val(JSON.stringify(doNotCompostItemsList));
-        }
-        $('#submitQuiz').on('click', function (event) {
-            updateHiddenInputs()
-        });
+        document.getElementById('hcompost').value = JSON.stringify(compostItems);
+        document.getElementById('hdonotcompost').value = JSON.stringify(nonCompostItems);
+      }
     });
-</script>
+  </script>
 
 <div class="center-screen">
     <div class="container mt-5">
@@ -94,6 +107,11 @@
             <input type="hidden" id="hdonotcompost" name="hdonotcompost">
         </form>
     </div>
+    {% if error %}
+<div class="alert alert-danger" role="alert">
+    {{ error }}
+</div>
+{% endif %}
 </div>
 
 {% endblock %}

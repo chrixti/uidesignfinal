@@ -3,7 +3,7 @@
 {% block content %}
 <div class="center-screen">
     <div class="container mt-5">
-        <h1>5. What can you do with finished compost?</h1>
+        <h1>6. What can you do with finished compost?</h1>
         <form action="/quiz6" method="post">
             <div class="col-lg-12">
                 <div class="form-check">
@@ -28,6 +28,11 @@
             </div>
         </form>
     </div>
+    {% if error %}
+<div class="alert alert-danger" role="alert">
+    {{ error }}
+</div>
+{% endif %}
 </div>
 
 {% endblock %}

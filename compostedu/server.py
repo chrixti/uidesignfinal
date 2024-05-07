@@ -63,167 +63,233 @@ def quiz_start():
 
 @app.route('/quiz', methods=['POST'])
 def quiz():
-    stname = request.form['name']
-    stemail = request.form['email']
-    if stname =="" or stemail =="":
+    session["score"] = 0  # Initialize score
+    session["responses"] = []  # Initialize list to store responses
+    return redirect(url_for('quiz1'))
+
+@app.route('/feedback')
+def feedback():
+    if 'current_question' not in session:
         return redirect(url_for('quiz_start'))
-    if stname != "" and stemail !="": 
-        session["stname"] = stname
-        session["stemail"] = stemail
-        session["score"] = 0
-        return redirect(url_for('quiz1')) 
-    # Save name and email to session or pass them as hidden fields in subsequent requests
-    return render_template('quiz_start.html')
+    next_question = {
+        'quiz1': 'quiz2',
+        'quiz2': 'quiz3',
+        'quiz3': 'quiz4',
+        'quiz4': 'quiz5',
+        'quiz5': 'quiz6',
+        'quiz6': 'quiz7',
+        'quiz7': 'quiz8',
+        'quiz8': 'quiz_result',
+    }
+    question = session['current_question']
+    return render_template('feedback.html', feedback=session['feedback'], next_question=next_question[question])
 
 # Routes for quiz questions
 @app.route('/quiz1', methods=['GET', 'POST'])
 def quiz1():
-    if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
-        return redirect(url_for('quiz_start'))
-    session["score"] = 0;
     if request.method == 'POST':
-        response1 = request.form['question1']
-        # Check if the response is correct
-        if response1 == 'C':
+        user_response = request.form.get('question1')
+        if not user_response:  # Checks if the response is empty
+            error_message = "Please select an option before moving forward."
+            return render_template('quiz1.html', error=error_message)
+
+        correct_answer = 'C'
+        is_correct = user_response == correct_answer
+        session["responses"].append({
+            'user_response': user_response,
+            'correct_answer': correct_answer,
+            'is_correct': is_correct
+        })
+        if is_correct:
             session["score"] += 1
-        return redirect(url_for('quiz2'))
+        session['feedback'] = "Correct!" if is_correct else f"Incorrect. The right answer is {correct_answer}."
+        session['current_question'] = 'quiz1'
+        return redirect(url_for('feedback'))
     return render_template('quiz1.html')
+
 
 @app.route('/quiz2', methods=['GET', 'POST'])
 def quiz2():
-    if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
-        return redirect(url_for('quiz_start'))
     if request.method == 'POST':
-        tempscore = 0
-        responses2 = request.form.getlist('question2')
-        correct_answers2 = ['A', 'D']
-        for response in responses2:
-            if response in correct_answers2:
-                tempscore += 1
-        if tempscore == 2:
-            session["score"] += 1           
-        return redirect(url_for('quiz3'))
+        user_responses = request.form.getlist('question2')
+        if not user_responses:  # Checks if any option is selected
+            error_message = "Please select at least one option before moving forward."
+            return render_template('quiz2.html', error=error_message)
+
+        correct_answers = ['A', 'D']
+        is_correct = all(resp in correct_answers for resp in user_responses) and len(user_responses) == len(correct_answers)
+        session["responses"].append({
+            'user_response': user_responses,
+            'correct_answer': correct_answers,
+            'is_correct': is_correct
+        })
+        if is_correct:
+            session["score"] += 1
+        session['feedback'] = "Correct!" if is_correct else f"Incorrect. The right answers are {correct_answers}."
+        session['current_question'] = 'quiz2'
+        return redirect(url_for('feedback'))
     return render_template('quiz2.html')
 
 @app.route('/quiz3', methods=['GET', 'POST'])
 def quiz3():
-    if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
-        return redirect(url_for('quiz_start'))
     if request.method == 'POST':
-        response3 = request.form['question3']
-        # Check if the response is correct
-        if response3 == 'A':
+        user_response = request.form.get('question3')
+        if not user_response:  # Check if the response is empty
+            return render_template('quiz3.html', error="Please select an option.")
+        correct_answer = 'A'
+        is_correct = user_response == correct_answer
+        session["responses"].append({
+            'user_response': user_response,
+            'correct_answer': correct_answer,
+            'is_correct': is_correct
+        })
+        if is_correct:
             session["score"] += 1
-        return redirect(url_for('quiz4'))
+        session['feedback'] = "Correct!" if is_correct else f"Incorrect. The right answer is {correct_answer}."
+        session['current_question'] = 'quiz3'
+        return redirect(url_for('feedback'))
     return render_template('quiz3.html')
 
 @app.route('/quiz4', methods=['GET', 'POST'])
 def quiz4():
-    if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
-        return redirect(url_for('quiz_start'))
     if request.method == 'POST':
-        response4 = request.form['question4']
-        # Check if the response is correct
-        if response4 == 'C':
+        user_response = request.form.get('question4')
+        if not user_response:  # Check if the response is empty
+            return render_template('quiz4.html', error="Please select an option.")
+        correct_answer = 'C'
+        is_correct = user_response == correct_answer
+        session["responses"].append({
+            'user_response': user_response,
+            'correct_answer': correct_answer,
+            'is_correct': is_correct
+        })
+        if is_correct:
             session["score"] += 1
-        return redirect(url_for('quiz5'))
+        session['feedback'] = "Correct!" if is_correct else f"Incorrect. The right answer is {correct_answer}."
+        session['current_question'] = 'quiz4'
+        return redirect(url_for('feedback'))
     return render_template('quiz4.html')
 
 @app.route('/quiz5', methods=['GET', 'POST'])
 def quiz5():
-    if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
-        return redirect(url_for('quiz_start'))
     if request.method == 'POST':
-        tempscore = 0
-        responses5 = request.form.getlist('question5')
-        correct_answers5 = ['A', 'C', 'D']
-        for response in responses5:
-            if response in correct_answers5:
-                tempscore += 1
-        if tempscore == 3:
+        user_responses = request.form.getlist('question5')
+        if not user_responses:  # Check if any options are selected
+            return render_template('quiz5.html', error="Please select at least one option.")
+        correct_answers = ['A', 'C', 'D']
+        is_correct = all(resp in correct_answers for resp in user_responses) and len(user_responses) == len(correct_answers)
+        session["responses"].append({
+            'user_response': user_responses,
+            'correct_answer': correct_answers,
+            'is_correct': is_correct
+        })
+        if is_correct:
             session["score"] += 1
-        return redirect(url_for('quiz6'))
+        session['feedback'] = "Correct!" if is_correct else f"Incorrect. The right answers are {correct_answers}."
+        session['current_question'] = 'quiz5'
+        return redirect(url_for('feedback'))
     return render_template('quiz5.html')
 
 @app.route('/quiz6', methods=['GET', 'POST'])
 def quiz6():
-    if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
-        return redirect(url_for('quiz_start'))
     if request.method == 'POST':
-        response6 = request.form['question6']
-        # Check if the response is correct
-        if response6 == 'B':
+        user_response = request.form.get('question6')
+        if not user_response:  # Check if the response is empty
+            return render_template('quiz6.html', error="Please select an option.")
+        correct_answer = 'B'
+        is_correct = user_response == correct_answer
+        session["responses"].append({
+            'user_response': user_response,
+            'correct_answer': correct_answer,
+            'is_correct': is_correct
+        })
+        if is_correct:
             session["score"] += 1
-        return redirect(url_for('quiz7'))
+        session['feedback'] = "Correct!" if is_correct else f"Incorrect. The right answer is {correct_answer}."
+        session['current_question'] = 'quiz6'
+        return redirect(url_for('feedback'))
     return render_template('quiz6.html')
 
 @app.route('/quiz7', methods=['GET', 'POST'])
 def quiz7():
-    if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
-        return redirect(url_for('quiz_start'))
     if request.method == 'POST':
-        response71 = request.form['question71']
-        # Check if the response is correct
-        if response71 == 'False':
+        user_responses = [request.form.get('question71'), request.form.get('question72'), request.form.get('question73')]
+        if not all(user_responses):  # Check if any required response is empty
+            return render_template('quiz7.html', error="Please answer all parts of the question.")
+        correct_answers = ['False', 'True', 'True']
+        is_correct = all(user_response == correct_answer for user_response, correct_answer in zip(user_responses, correct_answers))
+        session["responses"].append({
+            'user_response': user_responses,
+            'correct_answer': correct_answers,
+            'is_correct': is_correct
+        })
+        if is_correct:
             session["score"] += 1
-        response72 = request.form['question72']
-        # Check if the response is correct
-        if response72 == 'True':
-            session["score"] += 1
-        response73 = request.form['question73']
-        # Check if the response is correct
-        if response73 == 'True':
-            session["score"] += 1
-        return redirect(url_for('quiz8'))
+        session['feedback'] = "Correct!" if is_correct else f"Incorrect. The right answers are {correct_answers}."
+        session['current_question'] = 'quiz7'
+        return redirect(url_for('feedback'))
     return render_template('quiz7.html')
 
 @app.route('/quiz8', methods=['GET', 'POST'])
 def quiz8():
-    if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
-        return redirect(url_for('quiz_start'))
     if request.method == 'POST':
+        compost_items = set(json.loads(request.form.get('hcompost', '[]')))
+        do_not_compost_items = set(json.loads(request.form.get('hdonotcompost', '[]')))
+        if not compost_items or not do_not_compost_items:
+            return render_template('quiz8.html', error="Please categorize all items correctly.")
         correct_compost_items = {'Banana peel', 'Grass clippings', 'Tea bag (without staples)'}
         correct_do_not_compost_items = {'Plastic bottle', 'Dairy product', 'Glass jar'}
-
-        # Extract compost and do-not-compost items from the data
-        compost_items = set(json.loads(request.form.get('hcompost')))
-        do_not_compost_items = set(json.loads(request.form.get('hdonotcompost')))
-
-        # Check if submitted items are correct
-        if compost_items == correct_compost_items and do_not_compost_items == correct_do_not_compost_items:
+        is_correct_compost = compost_items == correct_compost_items
+        is_correct_do_not_compost = do_not_compost_items == correct_do_not_compost_items
+        is_correct = is_correct_compost and is_correct_do_not_compost
+        session["responses"].append({
+            'user_response': {
+                'compost': list(compost_items),
+                'do_not_compost': list(do_not_compost_items)
+            },
+            'correct_answer': {
+                'compost': list(correct_compost_items),
+                'do_not_compost': list(correct_do_not_compost_items)
+            },
+            'is_correct': is_correct
+        })
+        if is_correct:
             session["score"] += 1
-        
-        stname = session['stname']
-        stemail = session['stemail']
-        # Calculate total score
-        total_score = int(session['score'])
-        # Save quiz result to database
-        new_result = QuizResult(name=stname, email=stemail, score=total_score)
-        db.session.add(new_result)
-        db.session.commit()
-        return redirect(url_for('show_result'))
+        session['feedback'] = "Correct!" if is_correct else "Incorrect. Check the correct items for both composting and non-composting."
+        session['current_question'] = 'quiz8'
+        return redirect(url_for('feedback'))
     return render_template('quiz8.html')
 
-# Route to show quiz result
-@app.route('/show_result')
-def show_result():
-    if ('score' not in session) or ('stname' not in session) or ('stemail' not in session):
+
+@app.route('/quiz_result')
+def quiz_result():
+    if 'score' not in session:
         return redirect(url_for('quiz_start'))
 
-    # Retrieve and display quiz result from the database
-    # For simplicity, let's assume we're displaying the latest result
-    if session['score'] >= 8:
-        description = "Excellent! You have a deep understanding of composting."
-    elif session['score'] >= 5:
-        description = "Good job! You have a decent understanding of composting."
-    else:
-        description = "Keep learning! You may need to review some composting concepts."
+    score = session.get('score', 0)
+    responses = session.get('responses', [])
 
-    session.pop('stname', None)
-    session.pop('stemail', None)
+    # Construct a result object that includes responses, if it's needed based on your template
+    result = {
+        'responses': responses
+    }
+
+    description = "Keep learning! You may need to review some composting concepts."
+    if score >= 8:
+        description = "Excellent! You have a deep understanding of composting."
+    elif score >= 5:
+        description = "Good job! You have a decent understanding of composting."
+
+    # Clear session after use
     session.pop('score', None)
-    latest_result = QuizResult.query.order_by(QuizResult.id.desc()).first()
-    return render_template('quiz_result.html', score=latest_result.score, description=description)
+    session.pop('responses', None)
+
+    return render_template('quiz_result.html', score=score, description=description, result=result)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

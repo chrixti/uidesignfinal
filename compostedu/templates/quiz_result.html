@@ -1,19 +1,38 @@
-
-
 {% extends 'index.html' %}
 
-{% block content %}
+{% macro to_readable(value) %}
+    {% if value is mapping %}
+        {%- for key, val in value.items() %}
+            {{- key }}: {{ val }}{% if not loop.last %}, {% endif %}
+        {%- endfor %}
+    {% elif value is iterable and not value is string %}
+        {{ value | join(', ') }}
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endmacro %}
 
+{% block content %}
 <div class="center-screen">
     <div class="container mt-5">
-        <div class="col-lg-12">
-            <h1 class="text-center">Results</h1>
-            <h3 class="text-center">Score: {{ score }}/10</h3>
-            <h3 class="text-center">{{ description }}</h3>
-            <p class="text-center mt-5"><a href="/" class="btn btn-primary">Try Again</a></p>
+        <h1>Quiz Results</h1>
+        <h3>Your Score: {{ score }}/10</h3>
+        <p>{{ description }}</p>
+        <ul>
+            {% for response in result.responses %}
+            <li>
+                Question {{ loop.index }}:
+                <ul>
+                    <li>Your Answer: {{ to_readable(response.user_response) }}</li>
+                    <li>Correct Answer: {{ to_readable(response.correct_answer) }}</li>
+                    <li>{{ 'Correct' if response.is_correct else 'Incorrect' }}</li>
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="text-center mt-5">
+            <a href="/quiz" class="btn btn-primary">Try Again</a>
         </div>
     </div>
 </div>
-
-
 {% endblock %}
