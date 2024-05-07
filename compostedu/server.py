@@ -269,7 +269,6 @@ def quiz_result():
     score = session.get('score', 0)
     responses = session.get('responses', [])
 
-    # Construct a result object that includes responses, if it's needed based on your template
     result = {
         'responses': responses
     }
@@ -280,7 +279,6 @@ def quiz_result():
     elif score >= 5:
         description = "Good job! You have a decent understanding of composting."
 
-    # Clear session after use
     session.pop('score', None)
     session.pop('responses', None)
 
@@ -288,7 +286,6 @@ def quiz_result():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    # note that we set the 404 status explicitly
     return render_template('404.html'), 404
 
 if __name__ == '__main__':
