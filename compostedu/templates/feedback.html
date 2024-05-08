@@ -21,7 +21,7 @@
         <p>Items incorrectly placed in Do Not Compost: {{ session.responses[-1].user_response.do_not_compost | join(', ') }}</p>
     {% endif %}
     <form action="{{ url_for(next_question) }}" method="get">
-        <button type="submit" class="btn btn-primary">Next Question</button>
+        <button type="submit" class="btn btn-primary">Next</button>
     </form>
 </div>
 {% endblock %}
