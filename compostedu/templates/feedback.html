@@ -16,10 +16,6 @@
 <div class="feedback-container">
     <h2>Your Answer Was...</h2>
     <p>{{ feedback }}</p>
-    {% if session.current_question == 'quiz8' %}
-        <p>Items correctly placed in Compost: {{ session.responses[-1].user_response.compost | join(', ') }}</p>
-        <p>Items incorrectly placed in Do Not Compost: {{ session.responses[-1].user_response.do_not_compost | join(', ') }}</p>
-    {% endif %}
     <form action="{{ url_for(next_question) }}" method="get">
         <button type="submit" class="btn btn-primary">Next</button>
     </form>
