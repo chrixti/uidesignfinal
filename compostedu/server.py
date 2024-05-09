@@ -113,22 +113,35 @@ def quiz2():
     if request.method == 'POST':
         user_responses = request.form.getlist('question2')
         if not user_responses:  # Checks if any option is selected
-            error_message = "Please select at least one option before moving forward."
-            return render_template('quiz2.html', error=error_message)
+            return render_template('quiz2.html', error="Please select at least one option before moving forward.")
 
-        correct_answers = ['A', 'D']
-        is_correct = all(resp in correct_answers for resp in user_responses) and len(user_responses) == len(correct_answers)
+        correct_answers = {'A', 'D'}
+        user_responses_set = set(user_responses)
+        correct_count = len(user_responses_set & correct_answers)
+        total_possible = len(correct_answers)
+
+        partial_score = correct_count / total_possible
+        session["score"] += partial_score
+
         session["responses"].append({
             'user_response': user_responses,
-            'correct_answer': correct_answers,
-            'is_correct': is_correct
+            'correct_answer': list(correct_answers),
+            'is_correct': correct_count == len(user_responses_set)
         })
-        if is_correct:
-            session["score"] += 1
-        session['feedback'] = "Correct!" if is_correct else f"Incorrect. The right answers are {correct_answers}."
+
+        if correct_count == len(user_responses_set):
+            feedback_text = "Correct!"
+        elif correct_count > 0:
+            feedback_text = f"Partial credit received. You selected {user_responses}. The correct answers are {list(correct_answers)}."
+        else:
+            feedback_text = f"Incorrect. The correct answers are {list(correct_answers)}."
+
+        session['feedback'] = feedback_text
         session['current_question'] = 'quiz2'
         return redirect(url_for('feedback'))
     return render_template('quiz2.html')
+
+
 
 @app.route('/quiz3', methods=['GET', 'POST'])
 def quiz3():
@@ -176,19 +189,34 @@ def quiz5():
         user_responses = request.form.getlist('question5')
         if not user_responses:  # Check if any options are selected
             return render_template('quiz5.html', error="Please select at least one option.")
-        correct_answers = ['A', 'C', 'D']
-        is_correct = all(resp in correct_answers for resp in user_responses) and len(user_responses) == len(correct_answers)
+
+        correct_answers = {'A', 'C', 'D'}
+        user_responses_set = set(user_responses)
+        correct_count = len(user_responses_set & correct_answers)
+        total_possible = len(correct_answers)
+
+        partial_score = correct_count / total_possible
+        session["score"] += partial_score
+
         session["responses"].append({
             'user_response': user_responses,
-            'correct_answer': correct_answers,
-            'is_correct': is_correct
+            'correct_answer': list(correct_answers),
+            'is_correct': correct_count == len(user_responses_set)
         })
-        if is_correct:
-            session["score"] += 1
-        session['feedback'] = "Correct!" if is_correct else f"Incorrect. The right answers are {correct_answers}."
+
+        if correct_count == len(user_responses_set):
+            feedback_text = "Correct!"
+        elif correct_count > 0:
+            feedback_text = f"Partial credit received. You selected {user_responses}. The correct answers are {list(correct_answers)}."
+        else:
+            feedback_text = f"Incorrect. The correct answers are {list(correct_answers)}."
+
+        session['feedback'] = feedback_text
         session['current_question'] = 'quiz5'
         return redirect(url_for('feedback'))
     return render_template('quiz5.html')
+
+
 
 @app.route('/quiz6', methods=['GET', 'POST'])
 def quiz6():
@@ -214,34 +242,59 @@ def quiz6():
 def quiz7():
     if request.method == 'POST':
         user_responses = [request.form.get('question71'), request.form.get('question72'), request.form.get('question73')]
-        if not all(user_responses):  # Check if any required response is empty
-            return render_template('quiz7.html', error="Please answer all parts of the question.")
         correct_answers = ['False', 'True', 'True']
-        is_correct = all(user_response == correct_answer for user_response, correct_answer in zip(user_responses, correct_answers))
+
+        # Check if all responses are filled
+        if not all(user_responses):  
+            return render_template('quiz7.html', error="Please answer all parts of the question.")
+
+        # Calculate score: 1 point per correct answer
+        score = sum(1 for user_response, correct_answer in zip(user_responses, correct_answers) if user_response == correct_answer)
+        session["score"] += score  # Add total points for this quiz to the session score
+
+        # Store responses
         session["responses"].append({
             'user_response': user_responses,
             'correct_answer': correct_answers,
-            'is_correct': is_correct
+            'is_correct': score == len(user_responses)  # True if all are correct
         })
-        if is_correct:
-            session["score"] += 1
-        session['feedback'] = "Correct!" if is_correct else f"Incorrect. The right answers are {correct_answers}."
+
+        # Generate feedback based on performance
+        if score == len(user_responses):
+            feedback_text = "Correct!"
+        elif score > 0:
+            feedback_text = f"Some answers were incorrect. You answered {user_responses}. The correct answers are {correct_answers}."
+        else:
+            feedback_text = f"Incorrect. The correct answers are {correct_answers}."
+
+        session['feedback'] = feedback_text
         session['current_question'] = 'quiz7'
         return redirect(url_for('feedback'))
     return render_template('quiz7.html')
+
+
+
+
 
 @app.route('/quiz8', methods=['GET', 'POST'])
 def quiz8():
     if request.method == 'POST':
         compost_items = set(json.loads(request.form.get('hcompost', '[]')))
         do_not_compost_items = set(json.loads(request.form.get('hdonotcompost', '[]')))
-        if not compost_items or not do_not_compost_items:
-            return render_template('quiz8.html', error="Please categorize all items correctly.")
+
         correct_compost_items = {'Banana peel', 'Grass clippings', 'Tea bag (without staples)'}
         correct_do_not_compost_items = {'Plastic bottle', 'Dairy product', 'Glass jar'}
-        is_correct_compost = compost_items == correct_compost_items
-        is_correct_do_not_compost = do_not_compost_items == correct_do_not_compost_items
-        is_correct = is_correct_compost and is_correct_do_not_compost
+
+        correct_compost_count = len(compost_items & correct_compost_items)
+        correct_do_not_compost_count = len(do_not_compost_items & correct_do_not_compost_items)
+        total_possible_compost = len(correct_compost_items)
+        total_possible_do_not_compost = len(correct_do_not_compost_items)
+
+        partial_score_compost = correct_compost_count / total_possible_compost
+        partial_score_do_not_compost = correct_do_not_compost_count / total_possible_do_not_compost
+        total_partial_score = (partial_score_compost + partial_score_do_not_compost) / 2
+
+        session["score"] += total_partial_score
         session["responses"].append({
             'user_response': {
                 'compost': list(compost_items),
@@ -251,11 +304,17 @@ def quiz8():
                 'compost': list(correct_compost_items),
                 'do_not_compost': list(correct_do_not_compost_items)
             },
-            'is_correct': is_correct
+            'is_correct': total_partial_score == 1
         })
-        if is_correct:
-            session["score"] += 1
-        session['feedback'] = "Correct!" if is_correct else "Incorrect. Check the correct items for both composting and non-composting."
+
+        if total_partial_score == 1:
+            feedback_text = "Correct!"
+        elif total_partial_score > 0:
+            feedback_text = f"Partial credit received. You categorized as compost: {list(compost_items)}, and as do not compost: {list(do_not_compost_items)}. Correct compost items are {list(correct_compost_items)}, and correct do not compost items are {list(correct_do_not_compost_items)}."
+        else:
+            feedback_text = f"Incorrect. Correct compost items are {list(correct_compost_items)}, and correct do not compost items are {list(correct_do_not_compost_items)}."
+
+        session['feedback'] = feedback_text
         session['current_question'] = 'quiz8'
         return redirect(url_for('feedback'))
     return render_template('quiz8.html')
@@ -267,6 +326,9 @@ def quiz_result():
         return redirect(url_for('quiz_start'))
 
     score = session.get('score', 0)
+    # Round the score to the nearest hundredth
+    rounded_score = round(score, 2)
+
     responses = session.get('responses', [])
 
     result = {
@@ -274,15 +336,17 @@ def quiz_result():
     }
 
     description = "Keep learning! You may need to review some composting concepts."
-    if score >= 8:
+    if rounded_score >= 8:
         description = "Excellent! You have a deep understanding of composting."
-    elif score >= 5:
+    elif rounded_score >= 5:
         description = "Good job! You have a decent understanding of composting."
 
+    # Ensure the session is cleaned up after displaying results
     session.pop('score', None)
     session.pop('responses', None)
 
-    return render_template('quiz_result.html', score=score, description=description, result=result)
+    return render_template('quiz_result.html', score=rounded_score, description=description, result=result)
+
 
 @app.errorhandler(404)
 def page_not_found(e):
